@@ -33,8 +33,11 @@ export default class extends DiscourseRoute {
     });
   }
 
-  // TODO(tgxworld): This action is required by the `discovery/topics` controller which is not necessary for this route.
+  // TODO(tgxworld): The following 2 actions are required by the `discovery/topics` controller which is not necessary for this route.
   // Figure out a way to remove this.
   @action
   changeSort() {}
+
+  @action
+  changeNewListScope() {}
 }
