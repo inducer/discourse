@@ -20,7 +20,7 @@ export default class DiscourseTooltip extends Component {
   constructor() {
     super(...arguments);
     if (this.capabilities.touch) {
-      window.addEventListener("scroll", this.debouncedOnScroll);
+      window.addEventListener("scroll", this.onScroll);
     }
   }
 
@@ -33,7 +33,7 @@ export default class DiscourseTooltip extends Component {
   }
 
   @bind
-  debouncedOnScroll() {
+  onScroll() {
     discourseDebounce(() => this.#tippyInstance.hide(), 10);
   }
 
