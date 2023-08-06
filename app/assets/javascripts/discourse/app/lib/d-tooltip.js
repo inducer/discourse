@@ -4,12 +4,13 @@ function stopPropagation(instance, event) {
   event.preventDefault();
   event.stopPropagation();
 }
+
 function hasTouchCapabilities() {
   return navigator.maxTouchPoints > 1 || "ontouchstart" in window;
 }
 
 export default function createDTooltip(target, content) {
-  return tippy(target, {
+  const instance = tippy(target, {
     interactive: false,
     content,
     trigger: hasTouchCapabilities() ? "click" : "mouseenter",
@@ -19,4 +20,12 @@ export default function createDTooltip(target, content) {
     onTrigger: stopPropagation,
     onUntrigger: stopPropagation,
   });
+
+  if (hasTouchCapabilities()) {
+    window.addEventListener("scroll", () => {
+      instance.hide();
+    });
+  }
+
+  return instance;
 }
