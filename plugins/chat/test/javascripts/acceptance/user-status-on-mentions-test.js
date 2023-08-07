@@ -94,6 +94,7 @@ acceptance("Chat | User status on mentions", function (needs) {
       response({})
     );
 
+    // fixme looks like this can be removed
     pretender.get(`/chat/api/channels/1`, () =>
       response({
         channel,
