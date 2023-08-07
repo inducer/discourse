@@ -94,15 +94,6 @@ acceptance("Chat | User status on mentions", function (needs) {
       response({})
     );
 
-    // fixme looks like this can be removed
-    pretender.get(`/chat/api/channels/1`, () =>
-      response({
-        channel,
-        chat_messages: [message],
-        meta: { can_delete_self: true },
-      })
-    );
-
     pretender.get("/u/search/users", () =>
       response({
         users: [mentionedUser2, mentionedUser3],
