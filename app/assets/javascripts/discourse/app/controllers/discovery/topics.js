@@ -21,7 +21,6 @@ export default class TopicsController extends DiscoveryController.extend(
   @controller discovery;
 
   period = null;
-  canCreateTopicOnCategory = null;
   selected = null;
   expandGloballyPinned = false;
   expandAllPinned = false;

@@ -1,4 +1,9 @@
-import Composer, { SAVE_ICONS, SAVE_LABELS } from "discourse/models/composer";
+import Composer, {
+  CREATE_TOPIC,
+  NEW_TOPIC_KEY,
+  SAVE_ICONS,
+  SAVE_LABELS,
+} from "discourse/models/composer";
 import EmberObject, { action, computed } from "@ember/object";
 import { alias, and, or, reads } from "@ember/object/computed";
 import {
@@ -567,6 +572,9 @@ export default class ComposerService extends Service {
     this.close();
   }
 
+  /**
+   * This should probably be called `openComposerAndAddContinueFromText`...
+   */
   @action
   async openComposer(options, post, topic) {
     await this.open(options);
@@ -1337,6 +1345,37 @@ export default class ComposerService extends Service {
     } finally {
       this.skipAutoSave = false;
     }
+  }
+
+  @action
+  async openNewTopicDraft() {
+    if (
+      this.model?.action === Composer.CREATE_TOPIC &&
+      this.model?.draftKey === Composer.NEW_TOPIC_KEY
+    ) {
+      this.set("model.composeState", Composer.OPEN);
+    } else {
+      Draft.get(Composer.NEW_TOPIC_KEY).then((data) => {
+        if (data.draft) {
+          this.open({
+            action: Composer.CREATE_TOPIC,
+            draft: data.draft,
+            draftKey: Composer.NEW_TOPIC_KEY,
+            draftSequence: data.draft_sequence,
+          });
+        }
+      });
+    }
+  }
+
+  async openNewTopic({ category } = {}) {
+    this.open({
+      prioritizedCategoryId: category?.id,
+      topicCategoryId: category?.id,
+      action: CREATE_TOPIC,
+      draftKey: NEW_TOPIC_KEY,
+      draftSequence: 0,
+    });
   }
 
   // Given a potential instance and options, set the model for this composer.

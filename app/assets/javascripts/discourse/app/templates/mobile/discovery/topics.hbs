@@ -76,7 +76,7 @@
       @message={{this.footerMessage}}
     >
       {{#if this.latest}}
-        {{#if this.canCreateTopicOnCategory}}
+        {{#if this.category.canCreateTopic}}
           <DiscourseLinkedText
             @action={{route-action "createTopic"}}
             @text="topic.suggest_create_topic"

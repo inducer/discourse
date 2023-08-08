@@ -23,8 +23,8 @@
     @filterMode={{this.filterMode}}
     @noSubcategories={{this.noSubcategories}}
     @canCreateTopic={{this.canCreateTopic}}
-    @createTopic={{route-action "createTopic"}}
-    @createTopicDisabled={{this.cannotCreateTopicOnCategory}}
+    @createTopic={{this.handleCreateTopic}}
+    @createTopicDisabled={{not this.enableCreateTopicButton}}
     @hasDraft={{this.currentUser.has_topic_draft}}
     @editCategory={{route-action "editCategory" this.category}}
   />
