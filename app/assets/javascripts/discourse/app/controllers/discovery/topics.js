@@ -18,6 +18,7 @@ export default class TopicsController extends DiscoveryController.extend(
   DismissTopics
 ) {
   @service router;
+  @service composer;
   @controller discovery;
 
   period = null;

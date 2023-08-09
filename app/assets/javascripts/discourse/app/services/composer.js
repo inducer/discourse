@@ -1347,8 +1347,7 @@ export default class ComposerService extends Service {
     }
   }
 
-  @action
-  async openNewTopicDraft() {
+  async #openNewTopicDraft() {
     if (
       this.model?.action === Composer.CREATE_TOPIC &&
       this.model?.draftKey === Composer.NEW_TOPIC_KEY
@@ -1357,7 +1356,7 @@ export default class ComposerService extends Service {
     } else {
       Draft.get(Composer.NEW_TOPIC_KEY).then((data) => {
         if (data.draft) {
-          this.open({
+          return this.open({
             action: Composer.CREATE_TOPIC,
             draft: data.draft,
             draftKey: Composer.NEW_TOPIC_KEY,
@@ -1368,14 +1367,19 @@ export default class ComposerService extends Service {
     }
   }
 
-  async openNewTopic({ category } = {}) {
-    this.open({
-      prioritizedCategoryId: category?.id,
-      topicCategoryId: category?.id,
-      action: CREATE_TOPIC,
-      draftKey: NEW_TOPIC_KEY,
-      draftSequence: 0,
-    });
+  @action
+  async openNewTopic({ category, preferDraft = true } = {}) {
+    if (preferDraft && this.currentUser.has_topic_draft) {
+      return this.#openNewTopicDraft();
+    } else {
+      return this.open({
+        prioritizedCategoryId: category?.id,
+        topicCategoryId: category?.id,
+        action: CREATE_TOPIC,
+        draftKey: NEW_TOPIC_KEY,
+        draftSequence: 0,
+      });
+    }
   }
 
   // Given a potential instance and options, set the model for this composer.

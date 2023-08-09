@@ -4,7 +4,7 @@ import { TRACKED_QUERY_PARAM_VALUE } from "discourse/lib/topic-list-tracked-filt
 import { calculateFilterMode } from "discourse/lib/filter-mode";
 import { dependentKeyCompat } from "@ember/object/compat";
 import { tracked } from "@glimmer/tracking";
-import { action } from "@ember/object";
+
 export default class NavigationDefaultController extends Controller {
   @service router;
   @service composer;
@@ -25,14 +25,5 @@ export default class NavigationDefaultController extends Controller {
 
   get skipCategoriesNavItem() {
     return this.router.currentRoute.queryParams.f === TRACKED_QUERY_PARAM_VALUE;
-  }
-
-  @action
-  handleCreateTopic() {
-    if (this.currentUser?.has_topic_draft) {
-      this.composer.openNewTopicDraft();
-    } else {
-      this.composer.openNewTopic();
-    }
   }
 }

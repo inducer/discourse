@@ -78,7 +78,10 @@
       {{#if this.latest}}
         {{#if this.category.canCreateTopic}}
           <DiscourseLinkedText
-            @action={{route-action "createTopic"}}
+            @action={{fn
+              this.composer.openNewTopic
+              (hash category=this.category)
+            }}
             @text="topic.suggest_create_topic"
           />
         {{/if}}

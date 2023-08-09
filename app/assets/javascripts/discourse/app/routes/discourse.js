@@ -54,10 +54,12 @@ const DiscourseRoute = Route.extend({
 
   openTopicDraft() {
     deprecated(
-      "DiscourseRoute#openTopicDraft is deprecated. Inject the composer service and call openNewTopicDraft instead",
+      "DiscourseRoute#openTopicDraft is deprecated. Inject the composer service and call openNewTopic instead",
       { id: "discourse.open-topic-draft" }
     );
-    return getOwner(this).lookup("service:composer").openNewTopicDraft();
+    if (this.currentUser?.has_topic_draft) {
+      return getOwner(this).lookup("service:composer").openNewTopic();
+    }
   },
 
   isCurrentUser(user) {
