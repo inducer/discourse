@@ -1368,18 +1368,34 @@ export default class ComposerService extends Service {
   }
 
   @action
-  async openNewTopic({ category, preferDraft = true } = {}) {
+  async openNewTopic({ title, body, category, tags, preferDraft = true } = {}) {
     if (preferDraft && this.currentUser.has_topic_draft) {
       return this.#openNewTopicDraft();
     } else {
       return this.open({
         prioritizedCategoryId: category?.id,
         topicCategoryId: category?.id,
+        topicTitle: title,
+        topicBody: body,
+        topicTags: tags,
         action: CREATE_TOPIC,
         draftKey: NEW_TOPIC_KEY,
         draftSequence: 0,
       });
     }
+  }
+
+  @action
+  async openNewMessage({ title, body, recipients, hasGroups }) {
+    return this.open({
+      action: Composer.PRIVATE_MESSAGE,
+      recipients,
+      topicTitle: title,
+      topicBody: body,
+      archetypeId: "private_message",
+      draftKey: Composer.NEW_PRIVATE_MESSAGE_KEY,
+      hasGroups,
+    });
   }
 
   // Given a potential instance and options, set the model for this composer.
